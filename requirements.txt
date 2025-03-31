@@ -49,3 +49,4 @@ pdfplumber
 python-pptx
 slowapi
 python-docx
+alembic==1.15.2
