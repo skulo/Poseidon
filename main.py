@@ -362,7 +362,7 @@ def create_user(user: UserCreate, background_tasks: BackgroundTasks, db: Session
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
-    return open("trending/trending.html").read()
+    return open("trending/trending.html", encoding="utf-8").read()
 
 
 def sanitize_filename(filename: str) -> str:
