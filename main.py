@@ -1529,12 +1529,12 @@ def get_documents_by_category(category_id: str, db: Session = Depends(get_db)):
             "description": doc.description,
             "file_path": doc.file_path,
             "status": doc.status,
-            "file_name": doc.file_path.split('/')[-1],
+            "file_name": os.path.basename(doc.file_path),
             "uploaded_by": doc.uploaded_by,
             "category_id": doc.category_id,
             "uploaded_at": doc.uploaded_at.isoformat(),
-            "delete_url": f"/delete/{doc.file_path.split('/')[-1]}",
-            "download_url": f"/download/{doc.file_path.split('/')[-1]}",
+            "delete_url": f"/delete/{os.path.basename(doc.file_path)}",
+            "download_url": f"/download/{os.path.basename(doc.file_path)}",
             "uploaded_at_display": datetime.strptime(doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f").strftime("%m/%d/%Y"),
         }
         for doc in documents
@@ -1579,16 +1579,13 @@ def get_documents_by_category(
                 "description": doc.description,
                 "file_path": doc.file_path,
                 "status": doc.status,
-                "file_name": doc.file_path.split('/')[-1],
+                "file_name": os.path.basename(doc.file_path),
                 "uploaded_by": doc.uploaded_by,
-                "popularity": doc.popularity,
                 "category_id": doc.category_id,
                 "uploaded_at": doc.uploaded_at.isoformat(),
-                "delete_url": f"/delete/{doc.file_path.split('/')[-1]}",
-                "download_url": f"/download/{doc.file_path.split('/')[-1]}",
-                "uploaded_at_display": datetime.strptime(
-                    doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f"
-                ).strftime("%m/%d/%Y"),
+                "delete_url": f"/delete/{os.path.basename(doc.file_path)}",
+                "download_url": f"/download/{os.path.basename(doc.file_path)}",
+                "uploaded_at_display": datetime.strptime(doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f").strftime("%m/%d/%Y"),
             }
             for doc in documents
         ]
@@ -1615,13 +1612,13 @@ def get_documents_by_category(
                 "description": doc.description,
                 "file_path": doc.file_path,
                 "status": doc.status,
-                "file_name": doc.file_path.split('/')[-1],
+                "file_name": os.path.basename(doc.file_path),
                 "uploaded_by": doc.uploaded_by,
                 "popularity": doc.popularity,
                 "category_id": doc.category_id,
                 "uploaded_at": doc.uploaded_at.isoformat(),
-                "delete_url": f"/delete/{doc.file_path.split('/')[-1]}",
-                "download_url": f"/download/{doc.file_path.split('/')[-1]}",
+                "delete_url": f"/delete/{os.path.basename(doc.file_path)}",
+                "download_url": f"/download/{os.path.basename(doc.file_path)}",
                 "uploaded_at_display": datetime.strptime(
                     doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f"
                 ).strftime("%m/%d/%Y"),
@@ -1652,7 +1649,7 @@ def get_documents_information(
     return {
             "response": "OK",
             "title": doc.title,
-            "delete_url": f"/delete/{doc.file_path.split('/')[-1]}",
+            "delete_url": f"/delete/{os.path.basename(doc.file_path)}",
             "usremail": usr.email,
             "usrname": usr.name,
             "status": doc.status,
@@ -1676,12 +1673,12 @@ def get_pending_files(
             "description": doc.description,
             "file_path": doc.file_path,
             "status": doc.status,
-            "file_name": doc.file_path.split('/')[-1],
+            "file_name": os.path.basename(doc.file_path),
             "category_id": doc.category_id,
             "uploaded_by": doc.uploaded_by,
             "uploaded_at": doc.uploaded_at.isoformat(),
-            "delete_url": f"/delete/{doc.file_path.split('/')[-1]}",
-            "download_url": f"/download/{doc.file_path.split('/')[-1]}",
+            "delete_url": f"/delete/{os.path.basename(doc.file_path)}",
+            "download_url": f"/download/{os.path.basename(doc.file_path)}",
         }
         for doc in documents
     ]
