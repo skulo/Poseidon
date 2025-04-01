@@ -131,23 +131,34 @@ async function loadDocuments(categoryId = null, page = 1) {
         const role = user_data.role;
 
         const waitForQuizReady = async (quizId) => {
-          const maxRetries = 60;
+          const maxRetries = 9;
           let attempts = 0;
           let loaderContainer = document.getElementById("loader-container");
           loaderContainer.style.setProperty("display", "flex", "important");
 
           while (attempts < maxRetries) {
-            const response = await fetch(`/check-quiz-status/${quizId}`);
-            const data = await response.json();
+            try {
+              const response = await fetch(`/check-quiz-status/${quizId}`);
+              const data = await response.json();
 
-            if (data.ready) {
-              loaderContainer.style.display = "none";
-              return;
+              if (data.ready) {
+                loaderContainer.style.display = "none";
+                return;
+              }
+
+              await new Promise((resolve) => setTimeout(resolve, 5000));
+              attempts++;
+            } catch (err) {
+              console.error("Hiba a státusz lekérdezés során:", err);
+              break;
             }
-
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            attempts++;
           }
+
+          loaderContainer.style.display = "none";
+
+          throw new Error(
+            "Kvízgenerálás időtúllépés. Kérlek próbáld újra kevesebb kérdéssel."
+          );
         };
 
         const startQuizGeneration = async (lang, maxQuestions) => {
