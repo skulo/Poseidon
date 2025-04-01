@@ -1535,7 +1535,7 @@ def get_documents_by_category(category_id: str, db: Session = Depends(get_db)):
             "uploaded_at": doc.uploaded_at.isoformat(),
             "delete_url": f"/delete/{doc.file_path.split('/')[-1]}",
             "download_url": f"/download/{doc.file_path.split('/')[-1]}",
-            "uploaded_at_display": datetime.strptime(doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f").strftime("%-m/%-d/%Y"),
+            "uploaded_at_display": datetime.strptime(doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f").strftime("%m/%d/%Y"),
         }
         for doc in documents
     ]
@@ -1588,7 +1588,7 @@ def get_documents_by_category(
                 "download_url": f"/download/{doc.file_path.split('/')[-1]}",
                 "uploaded_at_display": datetime.strptime(
                     doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f"
-                ).strftime("%-m/%-d/%Y"),
+                ).strftime("%m/%d/%Y"),
             }
             for doc in documents
         ]
@@ -1624,7 +1624,7 @@ def get_documents_by_category(
                 "download_url": f"/download/{doc.file_path.split('/')[-1]}",
                 "uploaded_at_display": datetime.strptime(
                     doc.uploaded_at.isoformat(), "%Y-%m-%dT%H:%M:%S.%f"
-                ).strftime("%-m/%-d/%Y"),
+                ).strftime("%m/%d/%Y"),
             }
             for doc in documents
         ]
