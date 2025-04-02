@@ -1812,13 +1812,45 @@ def count_tokens(text: str) -> int:
 import json
 import re
 
-def clean_json_response(raw_content):
-
-    
+def clean_json_response(raw_content: str) -> str:
     cleaned_content = re.sub(r"^```json\s*", "", raw_content, flags=re.MULTILINE)
     cleaned_content = re.sub(r"\s*```$", "", cleaned_content, flags=re.MULTILINE)
+    cleaned_content = cleaned_content.strip()
 
-    return cleaned_content.strip()
+
+    match = re.search(r'({\s*"questions"\s*:\s*\[)', cleaned_content)
+    if not match:
+        return "{}"
+
+    questions_start = match.end()
+    questions_raw = cleaned_content[questions_start:]
+
+    question_pattern = re.compile(
+        r'{\s*"question_statement"\s*:\s*".+?",\s*"options"\s*:\s*\[.*?\],\s*"answer"\s*:\s*".+?"\s*}',
+        re.DOTALL
+    )
+    question_matches = question_pattern.findall(questions_raw)
+
+    if not question_matches:
+        return "{}"
+
+    questions = []
+    for q in question_matches:
+        try:
+            q_json = json.loads(q.replace("\n", "").replace("\r", ""))
+            questions.append(q_json)
+        except json.JSONDecodeError as e:
+            print(f"[clean_json_response] JSONDecodeError egy kérdésnél: {e}")
+            continue
+
+    print(f"[clean_json_response] Érvényes kérdések száma: {len(questions)}")
+
+    if not questions:
+        return "{}"
+
+    return json.dumps({"questions": questions}, ensure_ascii=False)
+
+
 
 def generate_quiz(text, lang, max_questions):
     MAX_TOKENS = 9000
@@ -1899,7 +1931,15 @@ def generate_quiz(text, lang, max_questions):
         try:
             quiz_data = json.loads(cleaned_content)
         except json.JSONDecodeError:
-            raise ValueError(f"A GPT-4o nem adott vissza érvényes JSON választ. Tisztított válasz: {cleaned_content[:500]}...")
+            print(f"A GPT-4o nem adott vissza érvényes JSON választ. Tisztított válasz: {cleaned_content[:500]}...")
+
+            return None
+        
+        if not quiz_data or "questions" not in quiz_data:
+            print(f"Visszatérő JSON nem tartalmaz kérdéseket: {quiz_data}")
+            return None
+
+
 
         if len(quiz_data.get("questions", [])) < max_questions:
             print(f"Figyelmeztetés: {max_questions} kérdés helyett csak {len(quiz_data['questions'])} érkezett vissza.")
@@ -1911,7 +1951,7 @@ def generate_quiz(text, lang, max_questions):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Hiba történt a kvízgenerálás során: {str(e)}")
 
-    
+
 
 from pdfminer.high_level import extract_text
 import pdfplumber
@@ -2385,6 +2425,11 @@ def generate_quiz_background(extracted_text, lang, max_questions, document_id_fo
     try:
         quiz_data = generate_quiz(extracted_text, lang, max_questions)
 
+        if not quiz_data or "questions" not in quiz_data:
+            print("Sikertelen generálás. Visszakapott adat:")
+            print(quiz_data)
+            return
+    
         existing_quiz = db.query(Quiz).filter(Quiz.id == quiz_id).first()
         if not existing_quiz:
             print(f"Hiba: Nincs ilyen kvíz ID: {quiz_id}")
