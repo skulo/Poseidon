@@ -49,5 +49,5 @@ pdfplumber
 python-pptx
 slowapi
 python-docx
-python-magic
+python-magic-bin==0.4.14
 alembic==1.15.2
