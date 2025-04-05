@@ -333,6 +333,8 @@ body {
 
 @media (max-width: 1230px) {
   .document-card {
+    box-sizing: border-box;
+    width: 95%;
     border: 0.2px solid #ffbb00;
   }
 

@@ -109,9 +109,7 @@ async function loadDocuments(categoryId = null) {
 
           loaderContainer.style.display = "none";
 
-          throw new Error(
-            "Kvízgenerálás időtúllépés. Kérlek próbáld újra kevesebb kérdéssel."
-          );
+          throw new Error("Kvízgenerálás időtúllépés. Kérlek próbáld újra.");
         };
 
         const startQuizGeneration = async (lang, maxQuestions) => {
@@ -139,7 +137,7 @@ async function loadDocuments(categoryId = null) {
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-              let errorMessage = "Ismeretlen hiba történt.";
+              let errorMessage = "Nem sikerült a generálás.";
               try {
                 const errorData = await response.json();
                 if (errorData.message) {
@@ -325,6 +323,14 @@ async function loadDocuments(categoryId = null) {
                 return;
               }
 
+              const confirmed = confirm(
+                "Biztosan le szeretnéd cserélni a fájlt? A régi fájl és a hozzátartozó kvízek, eredmények törlődni fognak."
+              );
+              if (!confirmed) {
+                submitButton.disabled = false;
+                return;
+              }
+
               const formData = new FormData();
               formData.append("uploaded_by", userId);
               formData.append("file", fileNew);
@@ -409,6 +415,13 @@ async function loadDocuments(categoryId = null) {
           };
 
           deleteButton.onclick = async () => {
+            const confirmed = confirm(
+              "Biztosan törölni szeretnéd a fájlt? A fájl és a hozzátartozó kvízek, eredmények törlődni fognak."
+            );
+            if (!confirmed) {
+              return;
+            }
+
             try {
               const response = await fetch(doc.delete_url, {
                 method: "DELETE",
@@ -597,9 +610,7 @@ async function loadDocuments(categoryId = null) {
 
           loaderContainer.style.display = "none";
 
-          throw new Error(
-            "Kvízgenerálás időtúllépés. Kérlek próbáld újra kevesebb kérdéssel."
-          );
+          throw new Error("Kvízgenerálás időtúllépés. Kérlek próbáld újra.");
         };
 
         const startQuizGeneration = async (lang, maxQuestions) => {
@@ -626,7 +637,7 @@ async function loadDocuments(categoryId = null) {
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-              let errorMessage = "Ismeretlen hiba történt.";
+              let errorMessage = "Nem sikerült a generálás.";
               try {
                 const errorData = await response.json();
                 if (errorData.message) {
@@ -814,6 +825,14 @@ async function loadDocuments(categoryId = null) {
                 return;
               }
 
+              const confirmed = confirm(
+                "Biztosan le szeretnéd cserélni a fájlt? A régi fájl és a hozzátartozó kvízek, eredmények törlődni fognak."
+              );
+              if (!confirmed) {
+                submitButton.disabled = false;
+                return;
+              }
+
               const formData = new FormData();
               formData.append("uploaded_by", userId);
               formData.append("file", fileNew);
@@ -899,6 +918,13 @@ async function loadDocuments(categoryId = null) {
           };
 
           deleteButton.onclick = async () => {
+            const confirmed = confirm(
+              "Biztosan törölni szeretnéd a fájlt? A fájl és a hozzátartozó kvízek, eredmények törlődni fognak."
+            );
+            if (!confirmed) {
+              return;
+            }
+
             try {
               const response = await fetch(doc.delete_url, {
                 method: "DELETE",

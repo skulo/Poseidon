@@ -1959,7 +1959,7 @@ from pptx import Presentation
 import io
 
 from docx import Document as DocxDocument
-
+import magic
 @app.get("/generate-quiz/{document_id_form}")
 async def generate_quiz_from_s3(
     document_id_form: str,
@@ -1986,6 +1986,25 @@ async def generate_quiz_from_s3(
         file_content = await FILE_MANAGER.get_file_content(filename)
     except Exception as e:
         return JSONResponse(content={"message": f"Nem sikerült betölteni a fájlt: {str(e)}"}, status_code=500)
+
+
+
+    mime = magic.from_buffer(file_content, mime=True)
+
+    allowed_mime_types = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation", 
+        "application/vnd.ms-powerpoint",
+        "text/plain"
+    ]
+
+    if mime not in allowed_mime_types:
+        return JSONResponse(
+            content={"message": "A fájl formátuma nem támogatott kvízgeneráláshoz."},
+            status_code=400
+        )
+    
 
     file_extension = filename.split('.')[-1].lower()
     extracted_text = ""
@@ -2018,6 +2037,13 @@ async def generate_quiz_from_s3(
         return JSONResponse(content={"message": "Nem támogatott fájlformátum"}, status_code=400)
 
     
+    letter_count = len(re.findall(r"[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]", extracted_text))
+
+    if letter_count < 100:
+        return JSONResponse(
+            content={"message": "A dokumentumból nem sikerült elegendő szöveget kinyerni, ezért nem lehet kvízt generálni belőle."},
+            status_code=400
+        )
 
 
     quiz_id = f"quiz_{uuid.uuid4()}"
@@ -2066,7 +2092,7 @@ async def generate_quiz_from_s3(
     
     if estimate_quiz_token_usage(extracted_text, max_questions) > MAX_TOKENS:
         return JSONResponse(
-            content={"message": "Túl hosszú a szöveg vagy túl sok a kérdés! Kérlek próbáld meg kevesebb kérdéssel."},
+            content={"message": "Túl hosszú a szöveg vagy túl sok a kérdés! Kérlek próbáld újra."},
             status_code=400
         )
     
