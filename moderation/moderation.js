@@ -241,47 +241,50 @@ async function approveFile(fileId) {
 
   if (response.ok) {
     showAlert("success", "Fájl jóváhagyva.");
-  } else {
-    showAlert("danger", "Hiba történt a jóváhagyás során.");
-  }
 
-  const responsee = await fetch("/me", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await responsee.json();
-  const sender = data.email;
-
-  const responseAboutUser = await fetch(`/filesinfo/${fileId}`, {
-    method: "GET",
-    credentials: "include",
-  });
-  const dataUser = await responseAboutUser.json();
-
-  const receiver = dataUser.usremail;
-  const fileTitle = dataUser.title;
-  const username = dataUser.usrname;
-
-  const loader = document.getElementById("loader-container");
-  loader.style.setProperty("display", "flex", "important");
-
-  const emailResponse = await fetch(
-    `/email/decision?recipient_email=${receiver}&title=${fileTitle}&sender=${sender}&username=${username}&decision=approved&fileId=${fileId}`,
-    {
+    const responsee = await fetch("/me", {
       method: "GET",
       credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await responsee.json();
+    const sender = data.email;
+
+    const responseAboutUser = await fetch(`/filesinfo/${fileId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const dataUser = await responseAboutUser.json();
+
+    const receiver = dataUser.usremail;
+    const fileTitle = dataUser.title;
+    const username = dataUser.usrname;
+
+    const loader = document.getElementById("loader-container");
+    loader.style.setProperty("display", "flex", "important");
+
+    const emailResponse = await fetch(
+      `/email/decision?recipient_email=${receiver}&title=${fileTitle}&sender=${sender}&username=${username}&decision=approved&fileId=${fileId}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+
+    loader.style.display = "none";
+
+    if (emailResponse.ok) {
+      showAlert("info", "Értesítő email elküldve.");
+    } else {
+      showAlert("danger", "Nem sikerült elküldeni az emailt.");
     }
-  );
-
-  loader.style.display = "none";
-
-  if (emailResponse.ok) {
-    showAlert("info", "Értesítő email elküldve.");
   } else {
-    showAlert("danger", "Nem sikerült elküldeni az emailt.");
+    showAlert(
+      "danger",
+      "Nem sikerült a fájl jóváhagyása. Lehet, hogy már megszületett a döntés, frissítsd az oldalt."
+    );
   }
 }
 
@@ -305,47 +308,50 @@ async function rejectFile(fileId, reason) {
 
   if (response.ok) {
     showAlert("warning", "Fájl elutasítva.");
-  } else {
-    showAlert("danger", "Hiba történt az elutasítás során.");
-  }
 
-  const responsee = await fetch("/me", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await responsee.json();
-  const sender = data.email;
-
-  const responseAboutUser = await fetch(`/filesinfo/${fileId}`, {
-    method: "GET",
-    credentials: "include",
-  });
-  const dataUser = await responseAboutUser.json();
-
-  const receiver = dataUser.usremail;
-  const fileTitle = dataUser.title;
-  const delete_url = dataUser.delete_url;
-  const username = dataUser.usrname;
-
-  const loader = document.getElementById("loader-container");
-  loader.style.setProperty("display", "flex", "important");
-
-  const emailResponse = await fetch(
-    `/email/decision?recipient_email=${receiver}&title=${fileTitle}&sender=${sender}&username=${username}&decision=rejected&fileId=${fileId}&rejection_reason=${reason}`,
-    {
+    const responsee = await fetch("/me", {
       method: "GET",
       credentials: "include",
-    }
-  );
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await responsee.json();
+    const sender = data.email;
 
-  loader.style.display = "none";
-  if (emailResponse.ok) {
-    showAlert("info", "Értesítő email elküldve.");
+    const responseAboutUser = await fetch(`/filesinfo/${fileId}`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const dataUser = await responseAboutUser.json();
+
+    const receiver = dataUser.usremail;
+    const fileTitle = dataUser.title;
+    const delete_url = dataUser.delete_url;
+    const username = dataUser.usrname;
+
+    const loader = document.getElementById("loader-container");
+    loader.style.setProperty("display", "flex", "important");
+
+    const emailResponse = await fetch(
+      `/email/decision?recipient_email=${receiver}&title=${fileTitle}&sender=${sender}&username=${username}&decision=rejected&fileId=${fileId}&rejection_reason=${reason}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+
+    loader.style.display = "none";
+    if (emailResponse.ok) {
+      showAlert("info", "Értesítő email elküldve.");
+    } else {
+      showAlert("danger", "Nem sikerült elküldeni az emailt.");
+    }
   } else {
-    showAlert("danger", "Nem sikerült elküldeni az emailt.");
+    showAlert(
+      "danger",
+      "Nem sikerült a fájl elutasítása. Lehet, hogy már megszületett a döntés, frissítsd az oldalt."
+    );
   }
 }
 

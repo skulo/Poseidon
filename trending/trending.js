@@ -113,6 +113,22 @@ async function loadDocuments(categoryId = null) {
         };
 
         const startQuizGeneration = async (lang, maxQuestions) => {
+          const checkResponse = await fetch(`/can-delete/${doc.file_name}`, {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (!checkResponse.ok) {
+            const errorData = await checkResponse.json();
+            showAlert(
+              "warning",
+              errorData.detail ||
+                "A dokumentum nem elérhető. Frissítsd az oldalt."
+            );
+            submitButton.disabled = false;
+            return;
+          }
+
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 200000);
 
@@ -331,6 +347,24 @@ async function loadDocuments(categoryId = null) {
                 return;
               }
 
+              const checkResponse = await fetch(
+                `/can-delete/${doc.file_name}`,
+                {
+                  method: "GET",
+                }
+              );
+
+              if (!checkResponse.ok) {
+                const errorData = await checkResponse.json();
+                showAlert(
+                  "warning",
+                  errorData.detail ||
+                    "A fájl nem elérhető. Frissítsd az oldalt."
+                );
+                submitButton.disabled = false;
+                return;
+              }
+
               const formData = new FormData();
               formData.append("uploaded_by", userId);
               formData.append("file", fileNew);
@@ -432,6 +466,10 @@ async function loadDocuments(categoryId = null) {
                 showAlert("success", "Sikeres törlés!");
                 loadDocuments();
               } else {
+                showAlert(
+                  "warning",
+                  "A fájl nem elérhető. Frissítsd az oldalt."
+                );
                 const errorResponse = await response.json();
               }
             } catch (error) {}
@@ -465,6 +503,10 @@ async function loadDocuments(categoryId = null) {
 
               if (response.status === 429) {
               } else if (!response.ok) {
+                showAlert(
+                  "warning",
+                  "A fájl nem elérhető. Frissítsd az oldalt."
+                );
               } else {
                 result = await response.json();
               }
@@ -614,6 +656,22 @@ async function loadDocuments(categoryId = null) {
         };
 
         const startQuizGeneration = async (lang, maxQuestions) => {
+          const checkResponse = await fetch(`/can-delete/${doc.file_name}`, {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (!checkResponse.ok) {
+            const errorData = await checkResponse.json();
+            showAlert(
+              "warning",
+              errorData.detail ||
+                "A dokumentum nem elérhető. Frissítsd az oldalt."
+            );
+            submitButton.disabled = false;
+            return;
+          }
+
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 200000);
           try {
@@ -833,6 +891,24 @@ async function loadDocuments(categoryId = null) {
                 return;
               }
 
+              const checkResponse = await fetch(
+                `/can-delete/${doc.file_name}`,
+                {
+                  method: "GET",
+                }
+              );
+
+              if (!checkResponse.ok) {
+                const errorData = await checkResponse.json();
+                showAlert(
+                  "warning",
+                  errorData.detail ||
+                    "A fájl nem elérhető. Frissítsd az oldalt."
+                );
+                submitButton.disabled = false;
+                return;
+              }
+
               const formData = new FormData();
               formData.append("uploaded_by", userId);
               formData.append("file", fileNew);
@@ -936,6 +1012,10 @@ async function loadDocuments(categoryId = null) {
 
                 loadDocuments();
               } else {
+                showAlert(
+                  "warning",
+                  "A fájl nem elérhető. Frissítsd az oldalt."
+                );
                 const errorResponse = await response.json();
               }
             } catch (error) {}
@@ -970,6 +1050,10 @@ async function loadDocuments(categoryId = null) {
 
               if (response.status === 429) {
               } else if (!response.ok) {
+                showAlert(
+                  "warning",
+                  "A fájl nem elérhető. Frissítsd az oldalt."
+                );
               } else {
                 result = await response.json();
               }

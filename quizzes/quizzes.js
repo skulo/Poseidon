@@ -101,14 +101,32 @@ function showQuizResult(results) {
       </div>
     `;
 
-    card.addEventListener("click", (event) => {
+    card.addEventListener("click", async (event) => {
       if (!event.target.classList.contains("delete-btn")) {
+        const checkQuiz = await fetch(`/api/quiz/${result.quiz_id}`, {
+          method: "GET",
+        });
+
+        if (!checkQuiz.ok) {
+          showAlert("warning", "A kvíz nem elérhető. Frissítsd az oldalt.");
+          return;
+        }
+
         window.location.href = `/quiz/quiz.html?quiz_id=${result.quiz_id}`;
       }
     });
 
     const deleteBtn = card.querySelector(".delete-btn");
     deleteBtn.addEventListener("click", async (e) => {
+      const checkQuiz = await fetch(`/api/quiz/${result.quiz_id}`, {
+        method: "GET",
+      });
+
+      if (!checkQuiz.ok) {
+        showAlert("warning", "A kvíz nem elérhető. Frissítsd az oldalt.");
+        return;
+      }
+
       e.stopPropagation();
       await deleteQuizResult(result.quiz_result_id);
       getQuizResults();

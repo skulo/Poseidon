@@ -160,6 +160,21 @@ async function loadDocuments(categoryId = null, page = 1) {
         };
 
         const startQuizGeneration = async (lang, maxQuestions) => {
+          const checkResponse = await fetch(`/can-delete/${doc.file_name}`, {
+            method: "GET",
+          });
+
+          if (!checkResponse.ok) {
+            const errorData = await checkResponse.json();
+            showAlert(
+              "warning",
+              errorData.detail ||
+                "A dokumentum nem elérhető. Frissítsd az oldalt."
+            );
+            submitButton.disabled = false;
+            return;
+          }
+
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 200000);
 
@@ -380,6 +395,24 @@ async function loadDocuments(categoryId = null, page = 1) {
                 return;
               }
 
+              const checkResponse = await fetch(
+                `/can-delete/${doc.file_name}`,
+                {
+                  method: "GET",
+                }
+              );
+
+              if (!checkResponse.ok) {
+                const errorData = await checkResponse.json();
+                showAlert(
+                  "warning",
+                  errorData.detail ||
+                    "A fájl nem elérhető. Frissítsd az oldalt."
+                );
+                submitButton.disabled = false;
+                return;
+              }
+
               const formData = new FormData();
               formData.append("uploaded_by", userId);
               formData.append("file", fileNew);
@@ -486,6 +519,7 @@ async function loadDocuments(categoryId = null, page = 1) {
             if (!confirmed) {
               return;
             }
+
             try {
               const response = await fetch(doc.delete_url, {
                 method: "DELETE",
@@ -496,6 +530,10 @@ async function loadDocuments(categoryId = null, page = 1) {
                 showAlert("success", "Sikeres törlés!");
                 loadDocuments(selectedCategoryId);
               } else {
+                showAlert(
+                  "warning",
+                  "A fájl nem elérhető. Frissítsd az oldalt."
+                );
                 const errorResponse = await response.json();
               }
             } catch (error) {}
@@ -530,6 +568,10 @@ async function loadDocuments(categoryId = null, page = 1) {
 
               if (response.status === 429) {
               } else if (!response.ok) {
+                showAlert(
+                  "warning",
+                  "A fájl nem elérhető. Frissítsd az oldalt."
+                );
               } else {
                 result = await response.json();
               }

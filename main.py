@@ -2640,3 +2640,28 @@ def delete_quiz(
     db.delete(quiz)
     db.commit()
     return {"message": "Kvíz sikeresen törölve."}
+
+
+
+@app.get("/can-delete/{filename}")
+async def can_delete_file(
+    filename: str,
+    db: Session = Depends(get_db)
+):
+    document = db.query(Document).filter(Document.file_path.contains(filename)).first()
+
+    if document is None:
+        raise HTTPException(status_code=404, detail="A fájl nem elérhető. Frissítsd az oldalt.")
+
+
+    return {"message": "A fájl törölhető."}
+
+
+
+@app.get("/api/quiz/{quiz_id}")
+def check_quiz_exists(quiz_id: str, db: Session = Depends(get_db)):
+    quiz = db.query(Quiz).filter(Quiz.id == quiz_id).first()
+    if not quiz:
+        raise HTTPException(status_code=404, detail="A kvíz nem elérhető.")
+    return {"status": "ok"}
+
