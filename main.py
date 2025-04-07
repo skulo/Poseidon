@@ -2046,21 +2046,6 @@ async def generate_quiz_from_s3(
         )
 
 
-    quiz_id = f"quiz_{uuid.uuid4()}"
-    new_quiz = Quiz(
-            id=quiz_id,
-            document_id=document_id_form,  
-            created_by=current_user.id,
-            is_ready=False,
-            created_at=datetime.utcnow()
-        )
-    db.add(new_quiz) 
-    db.commit()
-    db.refresh(new_quiz)
-
-    if lang not in ["magyar", "angol"]:
-        return JSONResponse(content={"message": "Nem támogatott nyelv"}, status_code=400)
-    
 
     def estimate_quiz_token_usage(text, max_questions):
         prompt_length = 150  
@@ -2101,6 +2086,18 @@ async def generate_quiz_from_s3(
             content={"message": "Csak angol vagy magyar nyelvet adhatsz meg."},
             status_code=400
         )
+    
+    quiz_id = f"quiz_{uuid.uuid4()}"
+    new_quiz = Quiz(
+            id=quiz_id,
+            document_id=document_id_form,  
+            created_by=current_user.id,
+            is_ready=False,
+            created_at=datetime.utcnow()
+        )
+    db.add(new_quiz) 
+    db.commit()
+    db.refresh(new_quiz)
         
     if user_db_entry:
         user_db_entry.tokens -= 1
