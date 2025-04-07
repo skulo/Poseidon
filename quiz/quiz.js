@@ -216,7 +216,7 @@ const showQuizResults = () => {
   }
 };
 
-const displayNextQuestion = () => {
+const nextQuestion = () => {
   if (currentQuestionNumber >= MAX_QUESTIONS - 1) {
     showQuizResults();
     return;
@@ -226,7 +226,7 @@ const displayNextQuestion = () => {
   makeQuestion();
 };
 
-nextBtn.addEventListener("click", displayNextQuestion);
+nextBtn.addEventListener("click", nextQuestion);
 
 startBtn.addEventListener("click", () => {
   startBtnContainer.style.display = "none";
