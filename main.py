@@ -1581,6 +1581,7 @@ def get_documents_by_category(
                 "status": doc.status,
                 "file_name": os.path.basename(doc.file_path),
                 "uploaded_by": doc.uploaded_by,
+                "popularity": doc.popularity,
                 "category_id": doc.category_id,
                 "uploaded_at": doc.uploaded_at.isoformat(),
                 "delete_url": f"/delete/{os.path.basename(doc.file_path)}",
