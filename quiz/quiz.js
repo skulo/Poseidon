@@ -133,7 +133,12 @@ const showQuizResults = () => {
     } catch (error) {}
   }
 
-  const userData = getUserData();
+  (async () => {
+    const userData = await getUserData();
+    if (userData) {
+      await sendQuizResult();
+    }
+  })();
 
   quizResult.style.display = "flex";
   quizContainer.style.display = "none";
@@ -210,10 +215,6 @@ const showQuizResults = () => {
     } else {
     }
   };
-
-  if (userData) {
-    sendQuizResult();
-  }
 };
 
 const nextQuestion = () => {
