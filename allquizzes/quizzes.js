@@ -42,7 +42,7 @@ async function getQuizResults(page = 1) {
   });
 
   if (!response.ok) {
-    alert("Nem sikerült betölteni a kvízeredményeket.");
+    alert("Nem sikerült betölteni a kvízeket.");
     return;
   }
 
@@ -91,6 +91,13 @@ function showQuizResult(results) {
 
           if (!checkQuiz.ok) {
             showAlert("warning", "A kvíz nem elérhető. Frissítsd az oldalt.");
+            return;
+          }
+
+          const confirmed = confirm(
+            "Biztosan törölni szeretnéd a kvízt? A kvízhez tartozó eredmények is törlésre kerülnek."
+          );
+          if (!confirmed) {
             return;
           }
 

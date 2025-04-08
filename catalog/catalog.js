@@ -303,7 +303,7 @@ async function loadDocuments(categoryId = null, page = 1) {
           deleteButton.className = "delete-button";
 
           const editButton = document.createElement("button");
-          editButton.innerText = "Szerkeszt";
+          editButton.innerText = "Fájlcsere";
           editButton.className = "edit-button";
 
           editButton.onclick = async () => {

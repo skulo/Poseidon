@@ -117,7 +117,7 @@ async function getSignupFormErrors(firstname, email, password, repeatPassword) {
         sessionStorage.setItem("verification_email", email);
         sessionStorage.setItem("verification_entity_id", data.id);
 
-        await updateVerificationUI(); // Ha itt hiba van, ne akadjon meg az egész
+        await updateVerificationUI();
       } catch (err) {
         console.error("updateVerificationUI hiba:", err);
       } finally {

@@ -127,6 +127,11 @@ function showQuizResult(results) {
         return;
       }
 
+      const confirmed = confirm("Biztosan törölni szeretnéd a kvízeredményt?");
+      if (!confirmed) {
+        return;
+      }
+
       e.stopPropagation();
       await deleteQuizResult(result.quiz_result_id);
       getQuizResults();

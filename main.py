@@ -135,7 +135,7 @@ from fastapi import Request
 def get_current_user(request: Request, db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid token",
+        detail="Nem vagy bejelentkezve",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
@@ -946,7 +946,7 @@ def send_email_decision(
                                             <tr>
                                                 <td class="content-cell">
                                                     <h1>Kedves {username}!</h1>
-                                                    <p>A szerkesztett fájlod "{title}" jóváhagyásra került, általa: {sender}.</p>
+                                                    <p>A lecserélt fájlod "{title}" jóváhagyásra került, általa: {sender}.</p>
                                                     <p>Üdv,<br>A Poseidon csapata</p>
                                                 </td>
                                             </tr>
