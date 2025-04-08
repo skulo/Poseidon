@@ -1433,12 +1433,14 @@ def resend_code(
             if current_timestamp < last_next_resend_time:
                 
                 if isinstance(last_next_resend_time, datetime):
-                    formatted_time = (last_next_resend_time + timedelta(hours=1)).strftime("%H:%M:%S")
+                    if last_next_resend_time.tzinfo is None:
+                        last_next_resend_time = last_next_resend_time.replace(tzinfo=timezone.utc)
                 else:
-                    
-                    datetime_obj = datetime.fromisoformat(last_next_resend_time)
-                    formatted_time = (datetime_obj + timedelta(hours=1)).strftime("%H:%M:%S")
-
+                    last_next_resend_time = datetime.fromisoformat(last_next_resend_time)
+                    if last_next_resend_time.tzinfo is None:
+                        last_next_resend_time = last_next_resend_time.replace(tzinfo=timezone.utc)
+                
+                formatted_time = last_next_resend_time.astimezone().strftime("%H:%M:%S")
                 return {"error": f"Legközelebb ekkor kérhetsz új kódot: {formatted_time}"}
         
         verification_run.try_count += 1
