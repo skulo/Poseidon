@@ -15,7 +15,8 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 raw_categories = [
-    {"id": "3", "name": "Matematika Alapjai", "parent_id": "1"},
+    {"id": "3", "name": "Matematikai alapok", "parent_id": "1"},
+    {"id": "50", "name": "Számítógépes rendszerek", "parent_id": "1"},
     {"id": "5", "name": "Analízis 1", "parent_id": "2"},
     {"id": "6", "name": "Webfejlesztés", "parent_id": "2"},
     {"id": "14", "name": "Webprogramozás", "parent_id": "7"},
@@ -25,7 +26,7 @@ raw_categories = [
     {"id": "18", "name": "Objektumelvű programozás", "parent_id": "2"},
     {"id": "19", "name": "Diszkrét matematika 1", "parent_id": "2"},
     {"id": "20", "name": "Alogritmusok és adatszerkezetek 1", "parent_id": "2"},
-    {"id": "21", "name": "Alogritmusok és adatszerkezetek 1", "parent_id": "7"},
+    {"id": "21", "name": "Alogritmusok és adatszerkezetek 2", "parent_id": "7"},
     {"id": "22", "name": "Analízis 2", "parent_id": "7"},
     {"id": "23", "name": "Programozási technológia", "parent_id": "7"},
     {"id": "24", "name": "Diszkrét modellek", "parent_id": "7"},
@@ -40,7 +41,7 @@ raw_categories = [
     {"id": "38", "name": "Kliensoldali webprogramozás", "parent_id": "10"},
     {"id": "39", "name": "Számítógépes grafika", "parent_id": "10"},
     {"id": "40", "name": "Python", "parent_id": "10"},
-    {"id": "41", "name": "Inofmatika története", "parent_id": "10"},
+    {"id": "41", "name": "Az informatika története", "parent_id": "10"},
     {"id": "42", "name": "Cisco", "parent_id": "10"},
     {"id": "43", "name": "Logika", "parent_id": "10"},
     {"id": "44", "name": "Programozáselmélet", "parent_id": "10"},
@@ -57,10 +58,10 @@ raw_categories = [
     {"id": "4", "name": "Funkcionális programozás", "parent_id": "1"},
     {"id": "31", "name": "Adatbázisok 2", "parent_id": "11"},
     {"id": "32", "name": "Számításelmélet 2", "parent_id": "11"},
-    {"id": "33", "name": "Telekommunikációs Hálózatok", "parent_id": "11"},
-    {"id": "34", "name": "Konkrurens Programozás", "parent_id": "11"},
-    {"id": "35", "name": "Mesterséges Intelligencia", "parent_id": "11"},
-    {"id": "12", "name": "Valószínűségszámítás és Statisztika", "parent_id": "11"},
+    {"id": "33", "name": "Telekommunikációs hálózatok", "parent_id": "11"},
+    {"id": "34", "name": "Konkrurens programozás", "parent_id": "11"},
+    {"id": "35", "name": "Mesterséges intelligencia", "parent_id": "11"},
+    {"id": "12", "name": "Valószínűségszámítás és statisztika", "parent_id": "11"},
 ]
 
 def populate_categories():
