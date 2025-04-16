@@ -27,7 +27,6 @@ raw_categories = [
     {"id": "19", "name": "Diszkrét matematika 1", "parent_id": "2"},
     {"id": "20", "name": "Alogritmusok és adatszerkezetek 1", "parent_id": "2"},
     {"id": "21", "name": "Alogritmusok és adatszerkezetek 2", "parent_id": "7"},
-    {"id": "21", "name": "Alogritmusok és adatszerkezetek 2", "parent_id": "7"},
     {"id": "22", "name": "Analízis 2", "parent_id": "7"},
     {"id": "23", "name": "Programozási technológia", "parent_id": "7"},
     {"id": "24", "name": "Diszkrét modellek", "parent_id": "7"},
