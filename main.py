@@ -164,10 +164,11 @@ def verify_get_user_from_db(email: str, db: Session = SessionLocal()) -> Optiona
     user = db.query(User).filter(User.email == email).first()
     user.verified = True
 
-    if email.endswith("@inf.elte.hu"):
-        user.tokens = 4  
-    else:
-        user.tokens = 2  
+    if user.tokens is None or user.tokens == 0:
+        if email.endswith("@inf.elte.hu"):
+            user.tokens = 4
+        else:
+            user.tokens = 2
 
     db.commit()
     db.close()
