@@ -635,7 +635,7 @@ def get_user_tokens(userId: str, db: Session = Depends(get_db)):
 
 def send_email(recipient_email: str, verification_code: str, name: str):
     sender_email = "poseidongg.noreply@gmail.com"
-    sender_password = "ptbi uhwy hvgn jiqq" 
+    sender_password = "lizc ezpe djac oldq" 
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
@@ -819,7 +819,7 @@ def send_email_decision(
         raise HTTPException(status_code=403, detail="Nincs jogosultság e-mail küldéshez")
     
     sender_email = "poseidongg.noreply@gmail.com"  
-    sender_password = "ptbi uhwy hvgn jiqq" 
+    sender_password = "lizc ezpe djac oldq" 
 
     fileinfo=db.query(Document).filter(Document.id == fileId).first()
   
