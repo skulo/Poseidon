@@ -2,6 +2,9 @@
 
 A file-sharing and quiz-generation web application built for university students. The platform enables students to upload, share and organize study materials in a hierarchical category system, and generate interactive multiple-choice quizzes from uploaded documents using the OpenAI API.
 
+## Live demo
+[poseidonrepo-production.up.railway.app](https://poseidonrepo-production.up.railway.app/)
+
 ## Features
 
 - **File management** — Upload, replace and delete study materials organized in a multi-level category hierarchy
